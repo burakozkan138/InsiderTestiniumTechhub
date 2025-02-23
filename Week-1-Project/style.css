@@ -1,0 +1,368 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Reset ve Genel Stiller */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+}
+
+/* Header Stili */
+header {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    width: 100%;
+    /* her zaman üste kalsın */
+    z-index: 99999;
+}
+
+nav {
+    max-width: 1200px;
+    /* ortalar */
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-list {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: rgb(44, 62, 80);
+    font-weight: 600;
+    transition: color 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.nav-link:hover {
+    color: rgb(231, 76, 60);
+}
+
+.nav-link h3 {
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+/* hamburger menü checkbox */
+.menu-toggle {
+    display: none;
+}
+
+.menu-toggle-label {
+    display: none;
+}
+
+.profile-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.profile-icon .material-symbols-outlined {
+    font-size: 2rem;
+    color: rgb(44, 62, 80);
+}
+
+.profile-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Home Section */
+.home-section {
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('./images/poster.jpg');
+    /* resim çok beyaz olduğu için önüne hafif siyahlık. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    /* Background Image'ın sabit kalmasını sağlar scrool daha güzel gözüküyor.*/
+    background-attachment: fixed;
+    transition: all 0.3s ease;
+}
+
+.home-content {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+}
+
+.home-content h1 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.home-content h1 a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.home-content h1 a:hover {
+    color: rgb(231, 76, 60);
+}
+
+.home-description p {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    text-shadow: 5px 2px 5px rgba(0, 0, 0);
+}
+
+/* Karakterler Section */
+.characters-section {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: rgb(44, 62, 80);
+}
+
+.character-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.character-card {
+    width: 350px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.character-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.character-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.character-info {
+    padding: 1rem;
+    font-size: 1rem;
+    color: #777;
+    font-weight: 400;
+
+    /* oyuncu ismini en altta göstermek için. */
+    min-height: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.character-info h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: rgb(44, 62, 80);
+}
+
+.character-info span {
+    font-weight: 600;
+    color: rgb(231, 76, 60);
+}
+
+/* Favorite section */
+.favorite-section {
+    padding: 5rem 2rem;
+    background: #ddd;
+}
+
+.favorite-content {
+    display: flex;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.favorite-info {
+    min-width: 300px;
+    flex: 1;
+}
+
+.favorite-info h3 {
+    font-size: 1.8rem;
+    color: rgb(44, 62, 80);
+    margin-bottom: 1rem;
+}
+
+.favorite-description {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.favorite-media {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.favorite-media iframe {
+    min-width: 300px;
+    width: 100%;
+    height: 300px;
+    border: none;
+}
+
+/* Bölümler Section */
+.episode-section {
+    padding: 5rem 2rem;
+}
+
+.episode-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.episode-card {
+    width: 500px;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.episode-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.episode-card div h3 {
+    font-size: 1.5rem;
+    color: rgb(44, 62, 80);
+    margin-bottom: 1rem;
+}
+
+.episode-info {
+    margin: 1rem 0;
+    color: #666;
+}
+
+.episode-date {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    color: #777;
+}
+
+/* Footer */
+footer {
+    padding: 2rem;
+    margin-top: 4rem;
+    background: #ddd;
+    color: rgb(44, 62, 80);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.social-link {
+    text-decoration: none;
+    margin: 0 1rem;
+    color: rgb(44, 62, 80);
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    color: rgb(231, 76, 60);
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+    .menu-toggle-label {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        cursor: pointer;
+    }
+
+    .bar {
+        width: 25px;
+        height: 3px;
+        background: #2c3e50;
+        transition: 0.3s;
+    }
+
+    .nav-list {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    /* menu toggle checked olduğunda nav listi göster*/
+    .menu-toggle:checked~.nav-list {
+        display: flex;
+    }
+
+    /* toggle spanların içindekileri çapraz yapıyor. */
+    .menu-toggle:checked~.menu-toggle-label .bar:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-toggle:checked~.menu-toggle-label .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle:checked~.menu-toggle-label .bar:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .character-card {
+        width: 100%;
+    }
+
+    .favorite-section {
+        padding: 3rem 1rem;
+    }
+
+    .episode-card {
+        width: 100%;
+    }
+}
