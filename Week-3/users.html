@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Sonsuz Kaydırmalı Kullanıcılar</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        padding: 20px;
+        background-color: #f5f5f5;
+        color: #333;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .users-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .user-card {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+      }
+
+      .user-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .user-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+        margin-right: 25px;
+        object-fit: cover;
+      }
+
+      .user-name {
+        font-weight: bold;
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #2c3e50;
+      }
+
+      .user-email {
+        color: #666;
+        font-size: 16px;
+      }
+
+      .loading-container {
+        text-align: center;
+        padding: 30px;
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top-color: #3498db;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        margin-top: 15px;
+        font-size: 18px;
+        color: #666;
+        font-style: italic;
+      }
+
+      .error {
+        text-align: center;
+        padding: 20px;
+        color: #e74c3c;
+        background-color: #fadbd8;
+        border-radius: 8px;
+        margin-top: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid #c0392b;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+        margin: 10px 5px;
+      }
+
+      .btn:hover {
+        background-color: #2980b9;
+      }
+
+      .btn-danger {
+        background-color: #e74c3c;
+      }
+
+      .btn-danger:hover {
+        background-color: #c0392b;
+      }
+
+      .btn-success {
+        background-color: #2ecc71;
+      }
+
+      .btn-success:hover {
+        background-color: #27ae60;
+      }
+
+      .buttons-container {
+        text-align: center;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Kullanıcı Listesi</h1>
+
+      <div class="buttons-container">
+        <button id="testErrorBtn" class="btn btn-danger">Hata Testi</button>
+        <button id="resetBtn" class="btn btn-success">Sıfırla</button>
+      </div>
+
+      <div class="users-container" id="usersContainer"></div>
+
+      <div class="loading-container" id="loadingIndicator" style="display: none;">
+        <div class="spinner"></div>
+        <div class="loading-text">Kullanıcılar yükleniyor...</div>
+      </div>
+
+      <div class="error" id="errorMessage" style="display: none;">
+        <div class="error-message">Kullanıcılar yüklenirken bir hata oluştu.</div>
+        <button id="retryBtn" class="btn">Tekrar Dene</button>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        let currentPage = 1;
+        let isLoading = false;
+        let hasMoreData = true;
+        let useErrorApi = false;
+
+        loadUsers();
+
+        $(window).scroll(function () {
+          if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+            if (!isLoading && hasMoreData) {
+              loadUsers();
+            }
+          }
+        });
+
+        $('#testErrorBtn').click(function () {
+          useErrorApi = true;
+          $('#usersContainer').empty();
+          currentPage = 1;
+          hasMoreData = true;
+          loadUsers();
+        });
+
+        $('#resetBtn').click(function () {
+          useErrorApi = false;
+          $('#usersContainer').empty();
+          $('#errorMessage').hide();
+          currentPage = 1;
+          hasMoreData = true;
+          loadUsers();
+        });
+
+        $('#retryBtn').click(function () {
+          $('#errorMessage').hide();
+          useErrorApi = false;
+          loadUsers();
+        });
+
+        function loadUsers() {
+          if (isLoading) return;
+
+          isLoading = true;
+          $('#loadingIndicator').show();
+
+          // Hata testi için geçersiz bir URL kullan
+          const apiUrl = useErrorApi
+            ? 'https://3reqres.in/api/users?page=${currentPage}&per_page=5&delay=3'
+            : `https://reqres.in/api/users?page=${currentPage}&per_page=5&delay=3`;
+
+          $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+              if (data.page >= data.total_pages) {
+                hasMoreData = false;
+              }
+
+              renderUsers(data.data);
+
+              currentPage++;
+
+              isLoading = false;
+              $('#loadingIndicator').hide();
+
+              if (hasMoreData && $(document).height() <= $(window).height()) {
+                loadUsers();
+              }
+
+              if (currentPage >= 3) {
+                currentPage = 1;
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error('Hata:', error);
+              $('#errorMessage').show();
+              isLoading = false;
+              $('#loadingIndicator').hide();
+            }
+          });
+        }
+
+        function renderUsers(users) {
+          $.each(users, function (index, user) {
+            const userCard = $('<div>').addClass('user-card');
+
+            const userHTML = `
+            <img src="${user.avatar}" alt="${user.first_name}" class="user-avatar">
+            <div class="user-info">
+              <div class="user-name">${user.first_name} ${user.last_name}</div>
+              <div class="user-email">${user.email}</div>
+            </div>
+          `;
+
+            userCard.html(userHTML);
+            $('#usersContainer').append(userCard);
+          });
+        }
+      });
+    </script>
+  </body>
+
+</html>
