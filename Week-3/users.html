@@ -4,273 +4,348 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jQuery Sonsuz Kaydırmalı Kullanıcılar</title>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <title>Rastgele Kullanıcı Galerisi</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
     <style>
       * {
-        box-sizing: border-box;
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
       }
 
       body {
+        background-color: #f0f4f8;
         padding: 20px;
-        background-color: #f5f5f5;
         color: #333;
       }
 
       .container {
-        max-width: 400px;
+        max-width: 1200px;
         margin: 0 auto;
       }
 
       h1 {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
       }
 
-      .users-container {
+      .controls {
         display: flex;
-        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 30px;
         gap: 15px;
       }
 
+      button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      button:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .user-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
       .user-card {
-        display: flex;
-        align-items: center;
         background-color: white;
-        border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        opacity: 0;
+        position: relative;
       }
 
       .user-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
       }
 
-      .user-avatar {
-        width: 100px;
-        height: 100px;
-        border-radius: 100%;
-        margin-right: 25px;
+      .user-card img {
+        width: 100%;
+        height: 200px;
         object-fit: cover;
+        border-bottom: 1px solid #eee;
+        transition: transform 0.3s ease;
+      }
+
+      .user-card img:hover {
+        transform: scale(1.05);
+      }
+
+      .user-info {
+        padding: 15px;
+        text-align: center;
       }
 
       .user-name {
-        font-weight: bold;
-        font-size: 24px;
-        margin-bottom: 10px;
-        color: #2c3e50;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #34495e;
       }
 
-      .user-email {
+      .user-detail {
+        margin-bottom: 5px;
+        font-size: 0.9rem;
         color: #666;
-        font-size: 16px;
       }
 
-      .loading-container {
+      .user-detail i {
+        width: 20px;
         text-align: center;
-        padding: 30px;
+        margin-right: 5px;
       }
 
-      .spinner {
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        border: 5px solid rgba(0, 0, 0, 0.1);
-        border-radius: 50%;
-        border-top-color: #3498db;
-        animation: spin 1s ease-in-out infinite;
+      /* Slider Styles */
+      .user-slider {
+        width: 90%;
+        margin: 0 auto;
       }
 
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
+      .user-slider .slick-slide {
+        padding: 10px;
       }
 
-      .loading-text {
-        margin-top: 15px;
-        font-size: 18px;
-        color: #666;
-        font-style: italic;
+      .slider-card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        height: 350px;
+        position: relative;
       }
 
-      .error {
+      .slider-card img {
+        width: 100%;
+        height: 200px;
+        /* Adjusted height for better appearance */
+        object-fit: cover;
+        border-radius: 10px 10px 0 0;
+      }
+
+      .slider-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      .loading {
         text-align: center;
+        font-size: 1.5rem;
         padding: 20px;
-        color: #e74c3c;
-        background-color: #fadbd8;
-        border-radius: 8px;
-        margin-top: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        border-left: 5px solid #c0392b;
+        color: #3498db;
+        display: none;
       }
 
-      .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #3498db;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
-        margin: 10px 5px;
-      }
-
-      .btn:hover {
-        background-color: #2980b9;
-      }
-
-      .btn-danger {
-        background-color: #e74c3c;
-      }
-
-      .btn-danger:hover {
-        background-color: #c0392b;
-      }
-
-      .btn-success {
-        background-color: #2ecc71;
-      }
-
-      .btn-success:hover {
-        background-color: #27ae60;
-      }
-
-      .buttons-container {
-        text-align: center;
-        margin: 20px 0;
+      .highlight {
+        border: 2px solid #3498db;
       }
     </style>
   </head>
 
   <body>
     <div class="container">
-      <h1>Kullanıcı Listesi</h1>
+      <h1>Rastgele Kullanıcı Galerisi</h1>
 
-      <div class="buttons-container">
-        <button id="testErrorBtn" class="btn btn-danger">Hata Testi</button>
-        <button id="resetBtn" class="btn btn-success">Sıfırla</button>
+      <div class="controls">
+        <button id="refreshUsers">Yenile</button>
+        <button id="toggleView">Slider olarak göster</button>
       </div>
 
-      <div class="users-container" id="usersContainer"></div>
-
-      <div class="loading-container" id="loadingIndicator" style="display: none;">
-        <div class="spinner"></div>
-        <div class="loading-text">Kullanıcılar yükleniyor...</div>
+      <div id="loading" class="loading">
+        Kullanıcılar Yükleniyor...
       </div>
 
-      <div class="error" id="errorMessage" style="display: none;">
-        <div class="error-message">Kullanıcılar yüklenirken bir hata oluştu.</div>
-        <button id="retryBtn" class="btn">Tekrar Dene</button>
+      <div id="userGrid" class="user-grid">
+      </div>
+
+      <div id="userSlider" class="user-slider" style="display: none;">
       </div>
     </div>
 
     <script>
       $(document).ready(function () {
-        let currentPage = 1;
-        let isLoading = false;
-        let hasMoreData = true;
-        let useErrorApi = false;
-
         loadUsers();
 
-        $(window).scroll(function () {
-          if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
-            if (!isLoading && hasMoreData) {
-              loadUsers();
-            }
+        $('#refreshUsers').on('click', function () {
+          $('#userGrid').empty();
+          loadUsers();
+        });
+
+        $('#toggleView').on('click', function () {
+          if ($('#userGrid').is(':visible')) {
+            $('#userGrid').slideUp(500, function () {
+              $('#userSlider').slideDown(500);
+              initializeSlider();
+              $('#toggleView').text('Grid olarak göster');
+            });
+          } else {
+            $('#userSlider').slideUp(500, function () {
+              $('#userGrid').slideDown(500);
+              $('#toggleView').text('Slider olarak göster');
+            });
           }
         });
 
-        $('#testErrorBtn').click(function () {
-          useErrorApi = true;
-          $('#usersContainer').empty();
-          currentPage = 1;
-          hasMoreData = true;
-          loadUsers();
-        });
-
-        $('#resetBtn').click(function () {
-          useErrorApi = false;
-          $('#usersContainer').empty();
-          $('#errorMessage').hide();
-          currentPage = 1;
-          hasMoreData = true;
-          loadUsers();
-        });
-
-        $('#retryBtn').click(function () {
-          $('#errorMessage').hide();
-          useErrorApi = false;
-          loadUsers();
-        });
-
         function loadUsers() {
-          if (isLoading) return;
-
-          isLoading = true;
-          $('#loadingIndicator').show();
-
-          // Hata testi için geçersiz bir URL kullan
-          const apiUrl = useErrorApi
-            ? 'https://3reqres.in/api/users?page=${currentPage}&per_page=5&delay=3'
-            : `https://reqres.in/api/users?page=${currentPage}&per_page=5&delay=3`;
+          $('#loading').fadeIn(300);
 
           $.ajax({
-            url: apiUrl,
-            method: 'GET',
+            url: `https://randomuser.me/api/?results=10`,
             dataType: 'json',
-            cache: false,
             success: function (data) {
-              if (data.page >= data.total_pages) {
-                hasMoreData = false;
+              $('#loading').fadeOut(300);
+              const users = data.results;
+
+              users.forEach(function (user, index) {
+                addUserToGrid(user, index);
+                addUserToSlider(user);
+              });
+
+              Fancybox.bind('[data-fancybox="gallery"]', {
+                caption: function (fancybox, slide) {
+                  const caption = slide.caption || '';
+                  return caption;
+                }
+              });
+
+              if ($('#userSlider').is(':visible')) {
+                initializeSlider();
               }
 
-              renderUsers(data.data);
-
-              currentPage++;
-
-              isLoading = false;
-              $('#loadingIndicator').hide();
-
-              if (hasMoreData && $(document).height() <= $(window).height()) {
-                loadUsers();
-              }
-
-              if (currentPage >= 3) {
-                currentPage = 1;
-              }
+              addHoverEffects();
             },
             error: function (xhr, status, error) {
-              console.error('Hata:', error);
-              $('#errorMessage').show();
-              isLoading = false;
-              $('#loadingIndicator').hide();
+              $('#loading').fadeOut(300);
+              alert('Error loading users: ' + error);
             }
           });
         }
 
-        function renderUsers(users) {
-          $.each(users, function (index, user) {
-            const userCard = $('<div>').addClass('user-card');
+        function addUserToGrid(user, index) {
+          const fullName = `${user.name.first} ${user.name.last}`;
+          const country = user.location.country;
+          const email = user.email;
+          const phone = user.phone;
+          const age = user.dob.age;
+          const profilePic = user.picture.large;
+          const card = $(`
+                    <div class="user-card" data-user-id="${index}">
+                        <a href="${profilePic}" data-fancybox="gallery" data-caption="${fullName}, ${age} - ${country}">
+                            <img src="${profilePic}" alt="${fullName}">
+                        </a>
+                        <div class="user-info">
+                            <div class="user-name">${fullName}, ${age}</div>
+                            <div class="user-detail"><i class="fas fa-envelope"></i>${email}</div>
+                            <div class="user-detail"><i class="fas fa-phone"></i>${phone}</div>
+                            <div class="user-detail"><i class="fas fa-globe"></i>${country}</div>
+                        </div>
+                    </div>
+                `);
 
-            const userHTML = `
-            <img src="${user.avatar}" alt="${user.first_name}" class="user-avatar">
-            <div class="user-info">
-              <div class="user-name">${user.first_name} ${user.last_name}</div>
-              <div class="user-email">${user.email}</div>
-            </div>
-          `;
+          $('#userGrid').append(card);
+          card.fadeIn(600).css('display', 'block');
 
-            userCard.html(userHTML);
-            $('#usersContainer').append(userCard);
+          setTimeout(function () {
+            card.animate({
+              opacity: 1
+            }, 500);
+          }, index * 150);
+        }
+
+        function addUserToSlider(user) {
+          const fullName = `${user.name.first} ${user.name.last}`;
+          const country = user.location.country;
+          const email = user.email;
+          const phone = user.phone;
+          const age = user.dob.age;
+          const profilePic = user.picture.large;
+
+          const sliderCard = $(`
+                    <div>
+                        <div class="slider-card">
+                            <a href="${profilePic}" data-fancybox="gallery" data-caption="${fullName}, ${age} - ${country}">
+                                <img src="${profilePic}" alt="${fullName}">
+                            </a>
+                            <div class="user-info">
+                                <div class="user-name">${fullName}, ${age}</div>
+                                <div class="user-detail">${email}</div>
+                                <div class="user-detail">${phone}</div>
+                                <div class="user-detail">${country}</div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+
+          $('#userSlider').append(sliderCard);
+        }
+
+        function initializeSlider() {
+          if ($('#userSlider').hasClass('slick-initialized')) {
+            $('#userSlider').slick('unslick');
+          }
+
+          $('#userSlider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            dots: true,
+            arrows: true,
+            responsive: [
+              {
+                breakpoint: 992,
+                settings: {
+                  slidesToShow: 2
+                }
+              },
+              {
+                breakpoint: 576,
+                settings: {
+                  slidesToShow: 1
+                }
+              }
+            ]
           });
+        }
+
+        function addHoverEffects() {
+          $('.user-card').hover(
+            function () {
+              $(this).toggleClass('highlight');
+              $(this).fadeTo(300, 1);
+            },
+            function () {
+              $(this).toggleClass('highlight');
+              $(this).fadeTo(300, 0.95);
+            }
+          );
         }
       });
     </script>
