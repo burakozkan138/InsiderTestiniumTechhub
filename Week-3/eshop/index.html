@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Shop</title>
+
+    <!-- CSS Dosyaları -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- JavaScript Dosyaları -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <body>
+    <!-- Header Bölümü -->
+    <header>
+      <div class="container">
+        <h1>E-Shop</h1>
+        <div class="search-container">
+          <input type="text" id="searchInput" placeholder="Ürün ara...">
+        </div>
+        <div class="cart-container">
+          <a href="#" id="cartButton" class="cart-button">
+            <div class="cart-icon-container">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count">0</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Ana İçerik -->
+    <main class="container">
+      <!-- Ürün Listesi Bölümü -->
+      <div class="products-container">
+        <div class="products-header">
+          <div class="products-section">
+            <h2>Ürünler</h2>
+            <div class="filter-group">
+              <!-- Kategori Filtreleme -->
+              <div class="category-dropdown">
+                <button class="filter-btn" id="categoryDropdownBtn">
+                  <i class="fas fa-tags"></i> <span id="categoryName"> Kategoriler </span> <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="dropdown-content" id="categoryFilters">
+                  <a href="#" data-category="all" class="active">Tümü</a>
+                  <!-- Diğer kategoriler dinamik olarak eklenecek -->
+                </div>
+              </div>
+
+              <!-- Sıralama Seçenekleri -->
+              <div class="sort-dropdown">
+                <button class="filter-btn" id="sortDropdownBtn">
+                  <i class="fas fa-sort"></i> Sırala <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="dropdown-content" id="sortOptions">
+                  <a href="#" data-sort="popular"><i class="fas fa-fire"></i> En Popüler</a>
+                  <a href="#" data-sort="price-asc"><i class="fas fa-sort-amount-down-alt"></i> Fiyat: Düşükten Yükseğe</a>
+                  <a href="#" data-sort="price-desc"><i class="fas fa-sort-amount-up"></i> Fiyat: Yüksekten Düşüğe</a>
+                  <a href="#" data-sort="rating"><i class="fas fa-star"></i> En Çok Değerlendirilen</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ürün Grid'i -->
+        <div id="products" class="products-grid">
+          <!-- Ürünler buraya eklenecek -->
+        </div>
+      </div>
+
+      <!-- Sepet Bölümü -->
+      <div id="cart" class="cart">
+        <div class="cart-header">
+          <h2>Sepetim</h2>
+          <button id="closeCart" aria-label="Sepeti Kapat">✕</button>
+        </div>
+
+        <!-- Kargo Bilgisi -->
+        <div class="cart-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+          <p class="progress-text">Ücretsiz kargo için <strong>200 TL</strong> daha harcayın!</p>
+        </div>
+
+        <!-- Sepet Ürünleri -->
+        <div id="cartItems" class="cart-items">
+        </div>
+
+        <!-- Sepet Özeti -->
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Ara Toplam:</span>
+            <span class="subtotal">0.00 TL</span>
+          </div>
+          <div class="summary-row">
+            <span>Kargo:</span>
+            <span class="shipping">29.90 TL</span>
+          </div>
+          <div class="summary-row discount" style="display: none;">
+            <span>İndirim:</span>
+            <span class="discount-amount">0.00 TL</span>
+          </div>
+        </div>
+
+        <!-- Sepet Alt Kısmı -->
+        <div class="cart-footer">
+          <p>Toplam: <span id="cartTotal">0.00</span> TL</p>
+          <div class="cart-buttons">
+            <button id="clearCart" class="clear-cart-btn"><i class="fas fa-trash-alt"></i> Sepeti Temizle</button>
+            <button id="checkout" class="checkout-btn"><i class="fas fa-credit-card"></i> Ödeme Yap</button>
+          </div>
+        </div>
+
+        <!-- Kupon Kodu -->
+        <div class="cart-coupon">
+          <input type="text" placeholder="İndirim kodu girin">
+          <button><i class="fas fa-tag"></i> Uygula</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Özellikler Bölümü -->
+    <section class="features">
+      <div class="container">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-truck"></i></div>
+          <h3>Ücretsiz Kargo</h3>
+          <p>200 TL üzeri siparişlerde ücretsiz kargo</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-stopwatch"></i></div>
+          <h3>Hızlı Teslimat</h3>
+          <p>24 saat içinde kargoya verilir</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-exchange-alt"></i></div>
+          <h3>Kolay İade</h3>
+          <p>14 gün içinde ücretsiz iade</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-lock"></i></div>
+          <h3>Güvenli Ödeme</h3>
+          <p>SSL güvenlik sertifikası</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Bölümü -->
+    <footer>
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-column">
+            <h3>E-Shop</h3>
+            <p>En kaliteli ürünleri en uygun fiyatlarla sunuyoruz.</p>
+            <div class="social-icons">
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-column">
+            <h3>Hızlı Linkler</h3>
+            <ul class="footer-links">
+              <li><a href="#">Ana Sayfa</a></li>
+              <li><a href="#">Ürünler</a></li>
+              <li><a href="#">Hakkımızda</a></li>
+              <li><a href="#">İletişim</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Kategoriler</h3>
+            <ul class="footer-links" id="footerCategories">
+              <!-- Kategoriler dinamik olarak eklenecek -->
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>İletişim</h3>
+            <ul class="contact-info">
+              <li><i class="fas fa-map-marker-alt"></i> Atatürk Cad. No:123, İstanbul</li>
+              <li><i class="fas fa-phone"></i> +90 212 123 45 67</li>
+              <li><i class="fas fa-envelope"></i> info@eshop.com</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="copyright">© 2025 E-Shop. Tüm hakları saklıdır.</p>
+      </div>
+    </footer>
+
+    <!-- Back to Top Butonu -->
+    <button id="backToTop" class="back-to-top"><i class="fas fa-arrow-up"></i></button>
+
+    <template id="productCardTemplate">
+      <div class="product-card" data-id="">
+        <div class="product-image">
+          <img src="" alt="">
+        </div>
+        <div class="product-info">
+          <div class="product-category"></div>
+          <h3 class="product-title"></h3>
+          <div class="product-price-container">
+            <span class="product-price"></span>
+          </div>
+        </div>
+        <div class="product-actions">
+          <button class="details-btn"><i class="fas fa-eye"></i> Detaylar</button>
+          <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i> Sepete Ekle</button>
+        </div>
+      </div>
+    </template>
+
+    <!-- Ürün Detay Modal -->
+    <div id="productModalTemplate" style="display: none;">
+      <div class="product-detail-modal">
+        <div class="product-detail-content">
+          <div class="product-detail-left">
+            <div class="product-detail-image">
+              <img id="modalProductImage" src="" alt="">
+            </div>
+            <div class="product-thumbnails" id="modalProductThumbnails">
+              <!-- Thumbnails will be added dynamically -->
+            </div>
+          </div>
+          <div class="product-detail-info">
+            <h1 id="modalProductTitle"></h1>
+
+            <div class="detail-rating">
+              <div class="stars" id="modalProductRating"></div>
+              <span class="review-count" id="modalReviewCount"></span>
+            </div>
+
+            <div class="detail-price-container">
+              <span class="detail-price" id="modalProductPrice"></span>
+              <span class="detail-original-price" id="modalOriginalPrice"></span>
+              <span class="discount-percent" id="modalDiscountPercent"></span>
+            </div>
+
+            <div class="detail-category" id="modalCategory"></div>
+            <div class="detail-description" id="modalDescription"></div>
+
+            <div class="product-quantity">
+              <h4>Miktar</h4>
+              <div class="quantity-selector">
+                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                <input type="number" value="1" min="1" max="99" id="modalProductQuantity">
+                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+
+            <div class="product-actions">
+              <button class="add-to-cart-btn-large" id="modalAddToCart">
+                <i class="fas fa-shopping-cart"></i> Sepete Ekle
+              </button>
+              <button class="wishlist-btn-large" id="modalAddToWishlist">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+
+            <div class="product-meta">
+              <p><span class="stock-status"><i class="fas fa-check-circle in-stock"></i> Stokta</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>
