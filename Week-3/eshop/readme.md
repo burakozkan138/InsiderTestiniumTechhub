@@ -8,4 +8,4 @@ Bu proje, ürün gezinme, sepet yönetimi gibi çeşitli özelliklere sahip işl
 - Sipariş işleme
 
 ## GitHub Pages Linki
-[Proje Linki](https://burakozkan138.github.io/InsiderTestiniumTechhub/eshop/)
+[Proje Linki](https://burakozkan138.github.io/InsiderTestiniumTechhub/)
